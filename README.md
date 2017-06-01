@@ -24,4 +24,4 @@ GET "/units/si?units=degree/minute"
 
 [List of values https://desolate-island-19052.herokuapp.com/](https://desolate-island-19052.herokuapp.com/)
 
-[Example Query](https://desolate-island-19052.herokuapp.com/units/si?units=degree/minute)
+https://desolate-island-19052.herokuapp.com/units/si?units=degree/minute
