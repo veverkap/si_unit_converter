@@ -1,0 +1,9 @@
+AllCops:
+  Exclude:
+    - 'test/**/*'
+
+StringLiterals:
+  Enabled: false    
+
+Style/RegexpLiteral:
+  Enabled: false  
