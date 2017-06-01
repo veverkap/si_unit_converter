@@ -58,10 +58,18 @@ describe ConversionTable do
   end
 
   it "converts multiplcation factor" do
+    expected = ((Math::PI / 648_000.0)/(60.0*10_000.0))
+    assert_equal expected, ConversionTable.new("(second/(minute*hectare))").converted_multiplication_factor
+
+    assert_equal (Math::PI / 648_000.0), ConversionTable.new("(second)").converted_multiplication_factor
+
     assert_equal 10000.0 / 3600.0, ConversionTable.new("hectare/h").converted_multiplication_factor
+
+
 
     ConversionTable::DATA.each do |item|
       assert_equal item[1][:factor], ConversionTable.new(item[0]).converted_multiplication_factor
+      assert_equal item[1][:factor], ConversionTable.new("(#{item[0]})").converted_multiplication_factor
     end    
 
     ConversionTable::DATA.each do |outer|

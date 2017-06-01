@@ -34,6 +34,7 @@ class ConversionTable
   def converted_multiplication_factor
     raise ArgumentError, "Invalid Units" unless validate_terms
     
+    result = iterate_items(:factor)
     eval(iterate_items(:factor).join("")).to_f
   end
 
@@ -43,19 +44,23 @@ class ConversionTable
 
   private
 
+  def replace_item(term, key)
+    if term.match(/\((.*)\)/)
+      return "(#{replace_item(Regexp.last_match[1], key)})"
+    elsif term =~ /^\({1}/
+      return "(#{replace_item(term[1,term.length-1], key)}"
+    elsif term =~ /\){1}$/
+      return "#{replace_item(term[0, term.length-1], key)})"
+    elsif term =~ /(\*|\/)/
+      return term
+    else
+      return DATA[term][key]
+    end
+  end
+
   def iterate_items(key)
     @units.split(/(\*|\/)/).map do |term|
-      if term.match(/\((.*)\)/)
-        "(" + DATA[Regexp.last_match[1]][key] + ")"
-      elsif term =~ /\(/
-        "(" + DATA[term.gsub(/\(|\)/, "")][key]
-      elsif term =~ /\)/
-        DATA[term.gsub(/\(|\)/, "")][key] + ")"
-      elsif term =~ /(\*|\/)/
-        term
-      else
-        DATA[term][key]
-      end
+      replace_item(term, key)
     end
   end
 
